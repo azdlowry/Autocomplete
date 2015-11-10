@@ -11,6 +11,11 @@ namespace Autocomplete.API
         public AutocompleteModule()
         {
             Get["/"] = _ => "Hello world!";
+
+            Get["/autocomplete"] = _ =>
+            {
+                return new { q = this.Request.Query["q"] };
+            };
         }
     }
 }

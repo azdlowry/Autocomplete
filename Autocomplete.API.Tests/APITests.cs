@@ -21,12 +21,30 @@ namespace Autocomplete.API.Tests
         {
             var bootstrapper = new DefaultNancyBootstrapper();
             var browser = new Browser(bootstrapper);
-            
+
             var result = browser.Get("/", with => {
                 with.HttpRequest();
             });
-            
+
             Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+        }
+
+        [Fact]
+        public void Should_return_list_of_autocomplete_suggestions()
+        {
+            var bootstrapper = new DefaultNancyBootstrapper();
+            var browser = new Browser(bootstrapper);
+
+            var result = browser.Get("/autocomplete", with => {
+                with.HttpRequest();
+                with.Accept(new Nancy.Responses.Negotiation.MediaRange("application/json"));
+                with.Query("q", "man");
+            });
+
+            Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+
+            var response = result.Body.DeserializeJson<dynamic>();
+            Assert.Equal(response["Q"], "man");
         }
     }
 }
