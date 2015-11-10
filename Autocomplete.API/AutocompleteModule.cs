@@ -14,7 +14,12 @@ namespace Autocomplete.API
 
             Get["/autocomplete"] = _ =>
             {
-                return new { q = this.Request.Query["q"] };
+                return new
+                {
+                    q = this.Request.Query["q"],
+                    d = new[] { new { k = 16237492, n = "Manchester" } },
+                    h = new[] { new { id = 12345, n = "Big Manchester Hotel" } }
+                };
             };
         }
     }

@@ -1,7 +1,9 @@
 ﻿using Nancy;
 using Nancy.Testing;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,8 +45,10 @@ namespace Autocomplete.API.Tests
 
             Assert.Equal(HttpStatusCode.OK, result.StatusCode);
 
-            var response = result.Body.DeserializeJson<dynamic>();
-            Assert.Equal(response["Q"], "man");
+            var response = (dynamic)JsonConvert.DeserializeObject<ExpandoObject>(result.Body.AsString());
+            Assert.Equal(response.q, "man");
+            Assert.Contains(response.d, (Predicate<dynamic>)(destination => (int)destination.k > 0));
+            Assert.Contains(response.h, (Predicate<dynamic>)(hotel => (int)hotel.id > 0));
         }
     }
 }
