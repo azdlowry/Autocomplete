@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Autocomplete.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,15 +11,20 @@ namespace Autocomplete.API
     {
         public AutocompleteModule()
         {
+            var autocomplete = new SearchAutoComplete();
+            autocomplete.BuildAutoCompleteIndex();
+
             Get["/"] = _ => "Hello world!";
 
             Get["/autocomplete"] = _ =>
             {
+                var q = this.Request.Query["q"];
+                var hotels = autocomplete.SuggestTermsFor(q);
                 return new
                 {
-                    q = this.Request.Query["q"],
+                    q = q,
                     d = new[] { new { k = 16237492, n = "Manchester" } },
-                    h = new[] { new { id = 12345, n = "Big Manchester Hotel" } }
+                    h = hotels
                 };
             };
         }

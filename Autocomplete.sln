@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autocomplete.SelfHost", "Au
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autocomplete.API.Tests", "Autocomplete.API.Tests\Autocomplete.API.Tests.csproj", "{10BCF72F-B5D3-4EC7-B192-645936489421}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autocomplete.Core", "Autocomplete.Core\Autocomplete.Core.csproj", "{F9BCAEFE-2B24-4428-9A96-794CEBBFF02D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autocomplete.Core.Tests", "Autocomplete.Core.Tests\Autocomplete.Core.Tests.csproj", "{DB746012-EE4D-4DD4-B214-EC52BB1FE56B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{10BCF72F-B5D3-4EC7-B192-645936489421}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10BCF72F-B5D3-4EC7-B192-645936489421}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10BCF72F-B5D3-4EC7-B192-645936489421}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9BCAEFE-2B24-4428-9A96-794CEBBFF02D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9BCAEFE-2B24-4428-9A96-794CEBBFF02D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9BCAEFE-2B24-4428-9A96-794CEBBFF02D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9BCAEFE-2B24-4428-9A96-794CEBBFF02D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB746012-EE4D-4DD4-B214-EC52BB1FE56B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB746012-EE4D-4DD4-B214-EC52BB1FE56B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB746012-EE4D-4DD4-B214-EC52BB1FE56B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB746012-EE4D-4DD4-B214-EC52BB1FE56B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
