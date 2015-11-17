@@ -1,0 +1,11 @@
+﻿{
+    "fields" : ["name"],
+    "query": {
+        "match": {
+            "name": { 
+                "query":    "<INSERT_QUERY_HERE>",
+                "analyzer": "standard" 
+            }
+        }
+    }
+}

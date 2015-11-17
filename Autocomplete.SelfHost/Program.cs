@@ -11,7 +11,7 @@ namespace Autocomplete.SelfHost
     {
         static void Main(string[] args)
         {
-            var url = "http://+:8080";
+            var url = "http://+:8085";
 
             using (WebApp.Start<Startup>(url))
             {
