@@ -33,7 +33,7 @@ namespace Autocomplete.API
             {
                 var autocomplete2 = new AutocompleteFinder("http://localhost:9200");
                 var q = this.Request.Query["q"];
-                return autocomplete2.FindAutocomplete(q);
+                return autocomplete2.FindAutocompleteNest(q);
             };
         }
     }

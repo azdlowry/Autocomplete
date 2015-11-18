@@ -1,21 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Resources;
 using Elasticsearch.Net;
 using Elasticsearch.Net.Connection;
+using Nest;
 using Newtonsoft.Json;
 
 namespace Autocomplete.Core.ElasticSearch
 {
+    public class Hotel
+    {
+        public int Id { get; set; }
+
+        public int TypeId { get; set; }
+
+        public string Name { get; set; }
+
+        public string Brand { get; set; }
+
+        public string Address { get; set; }
+    }
+
     public class AutocompleteFinder
     {
-        private ElasticsearchClient _client;
+        private readonly IElasticsearchClient _client;
+        private IElasticClient _nestClient;
 
         public AutocompleteFinder(string connectionString)
         {
             _client = new ElasticsearchClient(new ConnectionConfiguration(new Uri(connectionString)));
+            var connectionSettings = new ConnectionSettings(new Uri(connectionString));
+            connectionSettings.SetDefaultIndex("hotel");
+            connectionSettings.MapDefaultTypeNames(d => d.Add(typeof(Hotel), "hotel"));
+            _nestClient = new ElasticClient(connectionSettings);
+        }
+
+        public string FindAutocompleteNest(string autocomplete)
+        {
+            var response =
+                _nestClient.Search<Hotel>(
+                    search =>
+                        search.FielddataFields(h => h.Name)
+                            .Query(query => query.Match(match => match.OnField(h => h.Name).Query(autocomplete).Analyzer("standard"))));
+
+            var autocompleteList = JsonConvert.SerializeObject(response.Documents.Select(x => x.Name).ToList());
+
+            return autocompleteList;
         }
 
         public string FindAutocomplete(string autocomplete)
@@ -65,10 +98,5 @@ namespace Autocomplete.Core.ElasticSearch
             }
             return requestContentTemplate;
         }
-    }
-
-    public class Hotel
-    {
-        public string Name { get; set; }
     }
 }
