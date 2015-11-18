@@ -26,20 +26,16 @@ namespace Autocomplete.Core.ElasticSearch
 
     public class AutocompleteFinder
     {
-        private readonly IElasticsearchClient _client;
+        private IElasticsearchClient _client;
         private IElasticClient _nestClient;
-
-        public AutocompleteFinder(string connectionString)
+        
+        public string FindAutocompleteNest(string autocomplete)
         {
-            _client = new ElasticsearchClient(new ConnectionConfiguration(new Uri(connectionString)));
-            var connectionSettings = new ConnectionSettings(new Uri(connectionString));
+            var connectionSettings = new ConnectionSettings(new Uri("http://172.31.170.182:9200/"));
             connectionSettings.SetDefaultIndex("hotel");
             connectionSettings.MapDefaultTypeNames(d => d.Add(typeof(Hotel), "hotel"));
             _nestClient = new ElasticClient(connectionSettings);
-        }
 
-        public string FindAutocompleteNest(string autocomplete)
-        {
             var response =
                 _nestClient.Search<Hotel>(
                     search =>
@@ -53,6 +49,7 @@ namespace Autocomplete.Core.ElasticSearch
 
         public string FindAutocomplete(string autocomplete)
         {
+            _client = new ElasticsearchClient(new ConnectionConfiguration(new Uri("http://172.31.170.182:9200/")));
             var query = GetQuery(autocomplete);
 
             var elasticResponse = _client.Search("hotel", query);

@@ -12,13 +12,13 @@ namespace Autocomplete.API
     {
         public AutocompleteModule()
         {
-            var autocomplete = new SearchAutoComplete();
-            autocomplete.BuildAutoCompleteIndex();
-
             Get["/"] = _ => "Hello world!";
 
             Get["/autocomplete"] = _ =>
             {
+                var autocomplete = new SearchAutoComplete();
+                autocomplete.BuildAutoCompleteIndex();
+
                 var q = this.Request.Query["q"];
                 var hotels = autocomplete.SuggestTermsFor(q);
                 return new
@@ -31,14 +31,14 @@ namespace Autocomplete.API
 
             Get["/autocompletenest"] = _ =>
             {
-                var autocomplete2 = new AutocompleteFinder("http://localhost:9200");
+                var autocomplete2 = new AutocompleteFinder();
                 var q = this.Request.Query["q"];
                 return autocomplete2.FindAutocompleteNest(q);
             };
             
             Get["/autocompletenotnest"] = _ =>
             {
-                var autocomplete2 = new AutocompleteFinder("http://localhost:9200");
+                var autocomplete2 = new AutocompleteFinder();
                 var q = this.Request.Query["q"];
                 return autocomplete2.FindAutocomplete(q);
             };
