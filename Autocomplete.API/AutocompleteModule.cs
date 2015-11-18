@@ -29,11 +29,18 @@ namespace Autocomplete.API
                 };
             };
 
-            Get["/autocomplete2"] = _ =>
+            Get["/autocompletenest"] = _ =>
             {
                 var autocomplete2 = new AutocompleteFinder("http://localhost:9200");
                 var q = this.Request.Query["q"];
                 return autocomplete2.FindAutocompleteNest(q);
+            };
+            
+            Get["/autocompletenotnest"] = _ =>
+            {
+                var autocomplete2 = new AutocompleteFinder("http://localhost:9200");
+                var q = this.Request.Query["q"];
+                return autocomplete2.FindAutocomplete(q);
             };
         }
     }
