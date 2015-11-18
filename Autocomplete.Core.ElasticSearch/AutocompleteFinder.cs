@@ -58,7 +58,7 @@ namespace Autocomplete.Core.ElasticSearch
                _nestClient.Search<Hotel>(
                    search =>
                        search.FielddataFields(h => h.Name)
-                           .Query(query => query.MatchPhrasePrefix(match => match.OnField(h => h.Name).Query(autocomplete).Analyzer("standard"))));
+                           .Query(query => query.MatchPhrasePrefix(match => match.OnField(h => h.Name).Query(autocomplete).Analyzer("standard").Slop(3))));
 
             return JsonConvert.SerializeObject(response.Documents.Select(x => x.Name).ToList());
         }
