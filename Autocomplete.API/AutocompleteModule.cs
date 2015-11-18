@@ -35,11 +35,11 @@ namespace Autocomplete.API
                 var q = this.Request.Query["q"];
                 return autocomplete2.FindAutocompleteNest(q);
             };
-            Get["/autocompletematchprefixnest"] = _ =>
+            Get["/autocompletenestextras"] = _ =>
             {
                 var autocomplete2 = new AutocompleteFinder();
                 var q = this.Request.Query["q"];
-                return autocomplete2.FindAutocompleteMatchPhrasePrefixNest(q);
+                return autocomplete2.FindAutocompleteNestWithExtras(q);
             };
 
             Get["/autocompletenotnest"] = _ =>

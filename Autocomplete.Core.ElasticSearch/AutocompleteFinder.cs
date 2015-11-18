@@ -47,7 +47,7 @@ namespace Autocomplete.Core.ElasticSearch
             return autocompleteList;
         }
 
-        public string FindAutocompleteMatchPhrasePrefixNest(string autocomplete)
+        public string FindAutocompleteNestWithExtras(string autocomplete)
         {
             var connectionSettings = new ConnectionSettings(new Uri("http://172.31.170.182:9200/"));
             connectionSettings.SetDefaultIndex("hotel");
@@ -58,7 +58,7 @@ namespace Autocomplete.Core.ElasticSearch
                _nestClient.Search<Hotel>(
                    search =>
                        search.FielddataFields(h => h.Name)
-                           .Query(query => query.Match(match => match.OnField(h => h.Name).Query(autocomplete).Analyzer("standard").Slop(3).Fuzziness(2).MinimumShouldMatch("3"))));
+                           .Query(query => query.Match(match => match.OnField(h => h.Name).Query(autocomplete).Analyzer("standard").Slop(3).Fuzziness(2).PrefixLength(3).MinimumShouldMatch("-2"))));
 
             return JsonConvert.SerializeObject(response.Documents.Select(x => x.Name).ToList());
         }
