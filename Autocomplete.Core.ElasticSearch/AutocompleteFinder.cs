@@ -49,9 +49,17 @@ namespace Autocomplete.Core.ElasticSearch
 
         public string FindAutocompleteMatchPhrasePrefixNest(string autocomplete)
         {
+            var connectionSettings = new ConnectionSettings(new Uri("http://172.31.170.182:9200/"));
+            connectionSettings.SetDefaultIndex("hotel");
+            connectionSettings.MapDefaultTypeNames(d => d.Add(typeof(Hotel), "hotel"));
+            _nestClient = new ElasticClient(connectionSettings);
+
             var response =
-                _nestClient.Search<Hotel>(
-                    search => search.Query(q => q.MatchPhrasePrefix(m => m.Operator(Operator.And).Query(autocomplete))));
+               _nestClient.Search<Hotel>(
+                   search =>
+                       search.FielddataFields(h => h.Name)
+                           .Query(query => query.MatchPhrasePrefix(match => match.OnField(h => h.Name).Query(autocomplete).Analyzer("standard"))));
+
             return JsonConvert.SerializeObject(response.Documents.Select(x => x.Name).ToList());
         }
 
