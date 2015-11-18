@@ -35,7 +35,13 @@ namespace Autocomplete.API
                 var q = this.Request.Query["q"];
                 return autocomplete2.FindAutocompleteNest(q);
             };
-            
+            Get["/autocompletematchprefixnest"] = _ =>
+            {
+                var autocomplete2 = new AutocompleteFinder("http://localhost:9200");
+                var q = this.Request.Query["q"];
+                return autocomplete2.FindAutocompleteMatchPhrasePrefixNest(q);
+            };
+
             Get["/autocompletenotnest"] = _ =>
             {
                 var autocomplete2 = new AutocompleteFinder("http://localhost:9200");

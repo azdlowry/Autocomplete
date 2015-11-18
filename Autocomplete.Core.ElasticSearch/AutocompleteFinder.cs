@@ -51,6 +51,14 @@ namespace Autocomplete.Core.ElasticSearch
             return autocompleteList;
         }
 
+        public string FindAutocompleteMatchPhrasePrefixNest(string autocomplete)
+        {
+            var response =
+                _nestClient.Search<Hotel>(
+                    search => search.Query(q => q.MatchPhrasePrefix(m => m.Operator(Operator.And).Query(autocomplete))));
+            return JsonConvert.SerializeObject(response.Documents.Select(x => x.Name).ToList());
+        }
+
         public string FindAutocomplete(string autocomplete)
         {
             var query = GetQuery(autocomplete);
