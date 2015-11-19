@@ -47,6 +47,37 @@ namespace Autocomplete.Core.ElasticSearch
             return autocompleteList;
         }
 
+        public string Autosuggest(string autocomplete)
+        {
+            var connectionSettings = new ConnectionSettings(new Uri("http://localhost:9200/"));
+            connectionSettings.SetDefaultIndex("autocomplete");
+            _nestClient = new ElasticClient(connectionSettings);
+
+            const string autocompletionName = "destination-suggest";
+            var response =
+                _nestClient.Suggest<string>(suggest => suggest.Completion(autocompletionName, c => c.OnField("suggest").Text(autocomplete).Fuzzy(fuzzy => fuzzy.Fuzziness(2))));
+
+            var options = response.Suggestions[autocompletionName][0].Options;
+
+            var suggestions = new List<Suggestion>();
+
+            foreach (var option in options)
+            {
+                var score = option.Score;
+                if (option.Text.StartsWith(autocomplete))
+                    score += 200000000000;
+
+                    suggestions.Add(new Suggestion
+                {
+                    Text = option.Text,
+                    Payload = option.Payload,
+                    Score = score
+                });
+            }
+
+            return JsonConvert.SerializeObject(suggestions.OrderByDescending(x => x.Score).Select(y => y.Text).ToList());
+        }
+
         public string FindAutocompleteNestWithExtras(string autocomplete)
         {
             var connectionSettings = new ConnectionSettings(new Uri("http://172.31.170.182:9200/"));
@@ -111,5 +142,12 @@ namespace Autocomplete.Core.ElasticSearch
             }
             return requestContentTemplate;
         }
+    }
+
+    public class Suggestion
+    {
+        public string Text { get; set; }
+        public object Payload { get; set; }
+        public double Score { get; set; }
     }
 }

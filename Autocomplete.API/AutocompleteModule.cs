@@ -29,6 +29,13 @@ namespace Autocomplete.API
                 };
             };
 
+            Get["/autosuggest"] = _ =>
+            {
+                var autocomplete2 = new AutocompleteFinder();
+                var q = this.Request.Query["q"];
+                return autocomplete2.Autosuggest(q);
+            };
+
             Get["/autocompletenest"] = _ =>
             {
                 var autocomplete2 = new AutocompleteFinder();

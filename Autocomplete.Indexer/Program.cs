@@ -31,15 +31,15 @@ namespace Autocomplete.Indexer
             _client.CreateIndex("autocomplete",
                 c => c.Analysis(analysis => analysis.TokenFilters(filter => filter.Add("autocomplete_filter", new EdgeNGramTokenFilter
                 {
-                    MaxGram = 12,
-                    MinGram = 3
+                    MaxGram = 20,
+                    MinGram = 1
                 })).Analyzers(an => an.Add("autocomplete_analyzer", new CustomAnalyzer
                 {
                     Filter = new List<string> { "lowercase", "autocomplete_filter" }, Tokenizer = "standard"
                 })))
                 .AddMapping<DestinationDocument>(mapping =>
                     mapping.Properties(props =>
-                        props.String(s => s.Name("name"))
+                        props.String(s => s.Name("name").Analyzer("autocomplete_analyzer"))
                             .Completion(cp =>
                                 cp.Name("suggest")
                                 .Payloads()
