@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autocomplete.Core.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autocomplete.Core.ElasticSearch", "Autocomplete.Core.ElasticSearch\Autocomplete.Core.ElasticSearch.csproj", "{745CC84B-D85A-42E8-BA10-0BD53B05E727}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autocomplete.Indexer", "Autocomplete.Indexer\Autocomplete.Indexer.csproj", "{AD84A2C2-D89C-4256-8A89-11EB198A49A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{745CC84B-D85A-42E8-BA10-0BD53B05E727}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{745CC84B-D85A-42E8-BA10-0BD53B05E727}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{745CC84B-D85A-42E8-BA10-0BD53B05E727}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD84A2C2-D89C-4256-8A89-11EB198A49A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD84A2C2-D89C-4256-8A89-11EB198A49A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD84A2C2-D89C-4256-8A89-11EB198A49A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD84A2C2-D89C-4256-8A89-11EB198A49A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
