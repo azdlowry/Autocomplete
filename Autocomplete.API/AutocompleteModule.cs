@@ -27,6 +27,19 @@ namespace Autocomplete.API
                     h = hotels
                 };
             };
+
+            Get["/autocompletesimple"] = _ =>
+            {
+                var q = this.Request.Query["q"];
+                var hotels = SuggestTermsForSimple(q, autocomplete);
+                return hotels;
+            };
+        }
+
+        public IEnumerable<string> SuggestTermsForSimple(string q, SearchAutoComplete autocomplete)
+        {
+            var hotels = autocomplete.SuggestTermsFor(q);
+            return hotels.Select(h => h.Name);
         }
     }
 }
