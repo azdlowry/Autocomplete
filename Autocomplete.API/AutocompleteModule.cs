@@ -1,4 +1,5 @@
 ﻿using Autocomplete.Core.ElasticSearch;
+using Nancy;
 
 namespace Autocomplete.API
 {
@@ -11,9 +12,11 @@ namespace Autocomplete.API
             _autocompleteFinder = autocompleteFinder;
 
             Get["/autosuggest"] = _ =>
-            {
+            { 
                 var q = this.Request.Query["q"];
-                return _autocompleteFinder.Autosuggest(q);
+                var response = (Response)_autocompleteFinder.Autosuggest(q);
+                response.ContentType = "application/json";
+                return response;
             };
         }
     }
