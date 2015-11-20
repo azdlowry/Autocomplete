@@ -12,7 +12,7 @@ namespace Autocomplete.Indexer
 
         static void Main(string[] args)
         {
-            _client = new ElasticClient(new ConnectionSettings(new Uri("http://localhost:9200")));
+            _client = new ElasticClient(new ConnectionSettings(new Uri("http://172.31.170.182:9200/")));
             CreateIndex();
             var docs = GetDestinationDocuments();
             BulkUploadDocuments(docs);
@@ -50,27 +50,27 @@ namespace Autocomplete.Indexer
         private static List<DestinationDocument> GetDestinationDocuments()
         {
             var documents = new List<DestinationDocument>();
-            //var lines = File.ReadAllLines("destinations.csv").ToList();
-            
-            //foreach (var line in lines.Skip(1))
-            //{
-            //    var splittedLine = line.Split(',');
+            var lines = File.ReadAllLines("destinations.csv").ToList();
 
-            //    var destinationName = splittedLine[0];
-            //    var searchCount = uint.Parse(splittedLine[1]);
+            foreach (var line in lines.Skip(1))
+            {
+                var splittedLine = line.Split(',');
 
-            //    documents.Add(new DestinationDocument
-            //    {
-            //        Name = destinationName,
-            //        Suggest = new SuggestField
-            //        {
-            //            Input = destinationName,
-            //            Output = destinationName,
-            //            Weight = searchCount,
-            //            Payload = new { destinationName }
-            //        }
-            //    });
-            //}
+                var destinationName = splittedLine[0];
+                var searchCount = uint.Parse(splittedLine[1]);
+
+                documents.Add(new DestinationDocument
+                {
+                    Name = destinationName,
+                    Suggest = new SuggestField
+                    {
+                        Input = destinationName,
+                        Output = destinationName,
+                        Weight = searchCount,
+                        Payload = new { destinationName }
+                    }
+                });
+            }
 
             documents.Add(new DestinationDocument
             {
@@ -80,7 +80,7 @@ namespace Autocomplete.Indexer
                     Input = "manchester",
                     Output = "manchester",
                     Payload = new { },
-                    Weight = 50
+                    Weight = 100
                 }
             });
 

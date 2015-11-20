@@ -49,33 +49,37 @@ namespace Autocomplete.Core.ElasticSearch
 
         public string Autosuggest(string autocomplete)
         {
-            var connectionSettings = new ConnectionSettings(new Uri("http://localhost:9200/"));
+            var connectionSettings = new ConnectionSettings(new Uri("http://172.31.170.182:9200/"));
             connectionSettings.SetDefaultIndex("autocomplete");
             _nestClient = new ElasticClient(connectionSettings);
 
             const string autocompletionName = "destination-suggest";
             var response =
-                _nestClient.Suggest<string>(suggest => suggest.Completion(autocompletionName, c => c.OnField("suggest").Text(autocomplete).Fuzzy(fuzzy => fuzzy.Fuzziness(2))));
+                _nestClient.Suggest<string>(suggest => suggest.Completion(autocompletionName, c => c.Size(10).OnField("suggest").Text(autocomplete).Fuzzy(fuzzy=> fuzzy.Fuzziness(1).Transpositions(false))));
 
             var options = response.Suggestions[autocompletionName][0].Options;
 
-            var suggestions = new List<Suggestion>();
+            var fuzzySuggestions = new List<Suggestion>();
+
+            var exactMatchSuggestions = new List<Suggestion>();
 
             foreach (var option in options)
             {
-                var score = option.Score;
-                if (option.Text.StartsWith(autocomplete))
-                    score += 200000000000;
-
-                    suggestions.Add(new Suggestion
+                var suggestion = new Suggestion
                 {
                     Text = option.Text,
                     Payload = option.Payload,
-                    Score = score
-                });
+                    Score = option.Score
+                };
+
+                if (option.Text.ToUpperInvariant().StartsWith(autocomplete.ToUpperInvariant()))
+                    exactMatchSuggestions.Add(suggestion);
+                else fuzzySuggestions.Add(suggestion);
             }
 
-            return JsonConvert.SerializeObject(suggestions.OrderByDescending(x => x.Score).Select(y => y.Text).ToList());
+            var suggestions = exactMatchSuggestions.Concat(fuzzySuggestions);
+
+            return JsonConvert.SerializeObject(suggestions.Select(y => y.Text).ToList());
         }
 
         public string FindAutocompleteNestWithExtras(string autocomplete)
