@@ -18,7 +18,7 @@ namespace Autocomplete.Core.ElasticSearch
         {
             const string autocompletionName = "destination-suggest";
             var response =
-                _elasticClient.Suggest<string>(suggest => suggest.Completion(autocompletionName, c => c.Size(10).OnField("suggest").Text(autocomplete).Fuzzy(fuzzy=> fuzzy.Fuzziness(1).Transpositions(false))));
+                _elasticClient.Suggest<string>(suggest => suggest.Completion(autocompletionName, c => c.Size(100).OnField("suggest").Text(autocomplete).Fuzzy(fuzzy=> fuzzy.Fuzziness(1).Transpositions(false))));
 
             var options = response.Suggestions[autocompletionName][0].Options;
 
