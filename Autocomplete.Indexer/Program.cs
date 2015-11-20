@@ -29,17 +29,9 @@ namespace Autocomplete.Indexer
                 _client.DeleteIndex("autocomplete");
 
             _client.CreateIndex("autocomplete",
-                c => c.Analysis(analysis => analysis.TokenFilters(filter => filter.Add("autocomplete_filter", new EdgeNGramTokenFilter
-                {
-                    MaxGram = 20,
-                    MinGram = 1
-                })).Analyzers(an => an.Add("autocomplete_analyzer", new CustomAnalyzer
-                {
-                    Filter = new List<string> { "lowercase", "autocomplete_filter" }, Tokenizer = "standard"
-                })))
-                .AddMapping<DestinationDocument>(mapping =>
+                c => c.AddMapping<DestinationDocument>(mapping =>
                     mapping.Properties(props =>
-                        props.String(s => s.Name("name").Analyzer("autocomplete_analyzer"))
+                        props.String(s => s.Name("name"))
                             .Completion(cp =>
                                 cp.Name("suggest")
                                 .Payloads()
@@ -71,44 +63,7 @@ namespace Autocomplete.Indexer
                     }
                 });
             }
-
-            documents.Add(new DestinationDocument
-            {
-                Name = "manchester",
-                Suggest = new SuggestField
-                {
-                    Input = "manchester",
-                    Output = "manchester",
-                    Payload = new { },
-                    Weight = 100
-                }
-            });
-
-
-            documents.Add(new DestinationDocument
-            {
-                Name = "mansfield",
-                Suggest = new SuggestField
-                {
-                    Input = "mansfield",
-                    Output = "mansfield",
-                    Payload = new { },
-                    Weight = 50
-                }
-            });
-
-            documents.Add(new DestinationDocument
-            {
-                Name = "macclesfield",
-                Suggest = new SuggestField
-                {
-                    Input = "macclesfield",
-                    Output = "macclesfield",
-                    Payload = new { },
-                    Weight = 20
-                }
-            });
-
+            
             return documents;
         }
     }

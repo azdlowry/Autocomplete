@@ -1,59 +1,19 @@
-﻿using Autocomplete.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Autocomplete.Core.ElasticSearch;
+﻿using Autocomplete.Core.ElasticSearch;
 
 namespace Autocomplete.API
 {
     public class AutocompleteModule : Nancy.NancyModule
     {
-        public AutocompleteModule()
+        private readonly IAutocompleteFinder _autocompleteFinder;
+
+        public AutocompleteModule(IAutocompleteFinder autocompleteFinder)
         {
-            Get["/"] = _ => "Hello world!";
-
-            Get["/autocomplete"] = _ =>
-            {
-                var autocomplete = new SearchAutoComplete();
-                autocomplete.BuildAutoCompleteIndex();
-
-                var q = this.Request.Query["q"];
-                var hotels = autocomplete.SuggestTermsFor(q);
-                return new
-                {
-                    q = q,
-                    d = new[] { new { k = 16237492, n = "Manchester" } },
-                    h = hotels
-                };
-            };
+            _autocompleteFinder = autocompleteFinder;
 
             Get["/autosuggest"] = _ =>
             {
-                var autocomplete2 = new AutocompleteFinder();
                 var q = this.Request.Query["q"];
-                return autocomplete2.Autosuggest(q);
-            };
-
-            Get["/autocompletenest"] = _ =>
-            {
-                var autocomplete2 = new AutocompleteFinder();
-                var q = this.Request.Query["q"];
-                return autocomplete2.FindAutocompleteNest(q);
-            };
-            Get["/autocompletenestextras"] = _ =>
-            {
-                var autocomplete2 = new AutocompleteFinder();
-                var q = this.Request.Query["q"];
-                return autocomplete2.FindAutocompleteNestWithExtras(q);
-            };
-
-            Get["/autocompletenotnest"] = _ =>
-            {
-                var autocomplete2 = new AutocompleteFinder();
-                var q = this.Request.Query["q"];
-                return autocomplete2.FindAutocomplete(q);
+                return _autocompleteFinder.Autosuggest(q);
             };
         }
     }

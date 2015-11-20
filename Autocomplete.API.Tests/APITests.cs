@@ -2,22 +2,13 @@
 using Nancy.Testing;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Dynamic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Autocomplete.API.Tests
 {
     public class APITests
     {
-        public void reference_to_pull_in_types()
-        {
-            new AutocompleteModule();
-        }
-
         [Fact]
         public void Should_return_status_ok_for_root()
         {
