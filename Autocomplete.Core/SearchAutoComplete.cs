@@ -87,7 +87,7 @@ namespace Autocomplete.Core
                     Id = int.Parse(m_reader.Document(doc.Doc).Get("hotelId")),
                     Name = m_reader.Document(doc.Doc).Get(kSourceWordField)
                 })
-                .ToArray();
+                .ToList();
 
             return suggestions;
         }

@@ -29,7 +29,7 @@ namespace Autocomplete.API
                 $.ajax({
                     type: 'GET',
                     contentType: 'application/json; charset=utf-8',
-                    url: '/autosuggest?q=' + request.term,
+                    url: 'http://localhost:8080/autocompletesimple/?q=' + request.term,
                     success: function(data) {
                         if (data != null) {
 
@@ -58,7 +58,6 @@ namespace Autocomplete.API
 
 </html>
 ";
-
         }
     }
 }
